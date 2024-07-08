@@ -30,6 +30,8 @@ const gastos = [
     }
 ]
 
+let carritoTotalgastos = []
+
 let gastosContenedor = document.getElementById("descripcion-gastos")
 function crearGastos (gastoLista) {
     gastoLista.forEach(gasto => {
@@ -38,6 +40,23 @@ function crearGastos (gastoLista) {
                             <p>${gasto.costo}</p>
                             <button class="gastoSumar" id="${gasto.id}">Sumar</button>`
         gastosContenedor.appendChild(tarjeta)
-    });
+    })
+
+    agregarGastosCarrito()
 }
 crearGastos(gastos)
+
+function agregarGastosCarrito () {
+    agregadoCarrito = document.querySelectorAll(".gastoSumar")//Lista de nodo que captura cada objeto del array q fuera seleccionado
+    agregadoCarrito.forEach(button=> { //recorro la lista de nodo
+        button.onclick = (e) => { //Evento click en el botón
+            const gastosId = e.currentTarget.id // Guardo el evento
+            const seleccionGasto = gastos.find(gasto => gasto.id == gastosId) // compara los id y asigna a la nueva lista
+            
+            carritoTotalgastos.push(seleccionGasto)//Lleva toda la seleccióin de gastos al carrito
+            console.log(carritoTotalgastos)// veo q anda bien en la consola
+
+            localStorage.setItem("GASTOS", JSON.stringify(carritoTotalgastos))
+        }
+    })
+}
